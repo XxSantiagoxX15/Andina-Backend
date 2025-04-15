@@ -6,20 +6,22 @@ import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.Date;
 @Entity
 @Getter
 @Setter
-@Table(name="empresa")
-public class Empresa {
+@Table(name = "historial_acicon")
+public class Historial_Accion {
+
 
     @Id
     private int id;
 
     private String nombre;
 
+    private Double valor;
 
-    private String descripcion;
+    private Date fecha_hora;
 
 
-    private int sector_economico_id ;
 }

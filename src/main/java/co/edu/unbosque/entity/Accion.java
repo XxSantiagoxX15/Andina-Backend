@@ -6,14 +6,21 @@ import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.Date;
+
 @Entity
 @Getter
 @Setter
-@Table(name="pais")
-public class Pais {
- @Id
- private int id;
+@Table(name = "accion")
+public class Accion {
+    @Id
+    private int id;
 
- private String nombre;
+    private String nombre;
+
+    private  Double valor;
+
+    private Date fecha_hora;
+
 
 }

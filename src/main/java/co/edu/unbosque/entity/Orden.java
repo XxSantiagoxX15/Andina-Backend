@@ -6,20 +6,25 @@ import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.Date;
+
 @Entity
 @Getter
 @Setter
-@Table(name="empresa")
-public class Empresa {
-
+@Table(name="orden")
+public class Orden {
     @Id
-    private int id;
+    private int  id;
 
-    private String nombre;
+    private String tipo_orden;
+
+    private  Double precio;
+
+    private Date fecha_hora;
+
+    private  String comision;
 
 
-    private String descripcion;
 
 
-    private int sector_economico_id ;
 }
