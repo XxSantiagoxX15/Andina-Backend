@@ -18,12 +18,11 @@ import java.util.List;
 @Transactional
 @CrossOrigin(origins = { "http://localhost:8090", "http://localhost:8080", "*" })
 @RestController
-@RequestMapping("/action")
+@RequestMapping("/all/action")
 public class AccionController {
 
   @Autowired
   private AccionService accionService;
-
   @PostMapping()
   @Operation(summary = "Crear Accion", description = "Crea una accion de acuerdo a un cuerpo JSON.")
   @ApiResponses(value = {

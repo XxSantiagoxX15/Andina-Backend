@@ -18,13 +18,13 @@ import java.util.List;
 @Transactional
 @CrossOrigin(origins = { "http://localhost:8090", "http://localhost:8080", "*" })
 @RestController
-@RequestMapping("/usuarios")
+@RequestMapping("/admin")
 public class UsuarioController {
 
   @Autowired
   private UsuarioService usuarioService;
 
-  @PostMapping
+  @PostMapping("/crear")
   @Operation(summary = "Crear Usuario", description = "Crea un nuevo usuario con un cuerpo JSON.")
   @ApiResponses(value = {
     @ApiResponse(responseCode = "200", description = "Usuario creado correctamente", content = @Content(schema = @Schema(implementation = Usuario.class))),
@@ -41,7 +41,7 @@ public class UsuarioController {
     }
   }
 
-  @GetMapping
+  @GetMapping("/listar")
   @Operation(summary = "Listar Usuarios", description = "Retorna todos los usuarios registrados.")
   @ApiResponses(value = {
     @ApiResponse(responseCode = "200", description = "Usuarios encontrados", content = @Content(schema = @Schema(implementation = Usuario.class))),
@@ -51,7 +51,7 @@ public class UsuarioController {
     return ResponseEntity.ok(usuarioService.listarUsuarios());
   }
 
-  @GetMapping("/{id}")
+  @GetMapping("/buscar/{id}")
   @Operation(summary = "Obtener Usuario", description = "Retorna un usuario por su ID.")
   @ApiResponses(value = {
     @ApiResponse(responseCode = "200", description = "Usuario encontrado"),
@@ -67,7 +67,7 @@ public class UsuarioController {
     }
   }
 
-  @PutMapping("/{id}")
+  @PutMapping("/actualizar/{id}")
   @Operation(summary = "Actualizar Usuario", description = "Actualiza los datos de un usuario.")
   @ApiResponses(value = {
     @ApiResponse(responseCode = "200", description = "Usuario actualizado exitosamente"),
@@ -83,7 +83,7 @@ public class UsuarioController {
     }
   }
 
-  @DeleteMapping("/{id}")
+  @DeleteMapping("/eliminar/{id}")
   @Operation(summary = "Eliminar Usuario (lógico)", description = "Marca como eliminado un usuario (no lo borra físicamente).")
   @ApiResponses(value = {
     @ApiResponse(responseCode = "200", description = "Usuario marcado como eliminado"),
@@ -99,7 +99,7 @@ public class UsuarioController {
     }
   }
 
-  @DeleteMapping("/hard/{id}")
+  @DeleteMapping("/eliminar/hard/{id}")
   @Operation(summary = "Eliminar Usuario (físico)", description = "Elimina completamente un usuario.")
   @ApiResponses(value = {
     @ApiResponse(responseCode = "200", description = "Usuario eliminado permanentemente"),

@@ -30,6 +30,11 @@ public class UsuarioService {
       .orElseThrow(() -> new EntityNotFoundException("Usuario no encontrado con ID: " + identificacion));
   }
 
+  public Usuario buscarPorCorreo(String correo) {
+    return usuarioRepository.findByCorreo(correo)
+            .orElseThrow(() -> new EntityNotFoundException("Usuario no encontrado con ID: " + correo));
+  }
+
   public Usuario guardarUsuario(Usuario usuario) {
     usuario.setCreatedAt(LocalDateTime.now());
     usuario.setUpdateAt(LocalDateTime.now());

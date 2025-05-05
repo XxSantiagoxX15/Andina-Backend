@@ -1,6 +1,7 @@
 package co.edu.unbosque.andina.entity;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -41,24 +42,27 @@ public class Usuario {
 
   @Column(name = "telefono")
   private String telefono;
+  @JsonIgnore
+  @Column(name= "saldo")
+  private Double saldo;
 
   @Column(name = "numero_licencia")
   private String numeroLicencia;
 
-  @ManyToOne
-  @JoinColumn(name = "rol_id", referencedColumnName = "id")
-  private Rol rol;
 
-  @ManyToOne
-  @JoinColumn(name = "ciudad_id", referencedColumnName = "id")
-  private Ciudad ciudad;
+  @Column(name = "rol_id")
+  private int rol;
 
+
+  @Column(name = "ciudad_id")
+  private int ciudad;
+  @JsonIgnore
   @Column(name = "created_at")
   private LocalDateTime createdAt;
-
+  @JsonIgnore
   @Column(name = "update_at")
   private LocalDateTime updateAt;
-
+@JsonIgnore
   @Column(name = "deleted_at")
   private LocalDateTime deletedAt;
 }

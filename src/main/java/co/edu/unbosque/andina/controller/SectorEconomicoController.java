@@ -19,7 +19,7 @@ import java.util.Optional;
 @Transactional
 @CrossOrigin(origins = { "http://localhost:8090", "http://localhost:8080", "*" })
 @RestController
-@RequestMapping("/sector-economico")
+@RequestMapping("/all/sector-economico")
 public class SectorEconomicoController {
 
   @Autowired
