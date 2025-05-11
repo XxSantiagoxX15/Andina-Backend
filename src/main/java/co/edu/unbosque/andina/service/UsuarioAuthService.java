@@ -25,7 +25,7 @@ public class UsuarioAuthService implements UserDetailsService {
         String role;
         switch (user.getRol()) {
             case 1:
-                role = "ROLE_ADMININISTRADOR";
+                role = "ROLE_ADMINISTRADOR";
                 break;
             case 2:
                 role = "ROLE_COMISIONISTA";

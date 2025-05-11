@@ -1,6 +1,7 @@
 package co.edu.unbosque.andina.controller;
 
 import co.edu.unbosque.andina.entity.Usuario;
+import co.edu.unbosque.andina.service.CiudadService;
 import co.edu.unbosque.andina.service.UsuarioService;
 import co.edu.unbosque.andina.util.JwtUtil;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -16,6 +17,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.Optional;
+
 
 @Transactional
 @CrossOrigin(origins = { "http://localhost:8090", "http://localhost:8080", "*" })
@@ -30,6 +33,8 @@ public class UsuarioAuthController {
     private  PasswordEncoder passwordEncoder;
     @Autowired
     private UsuarioService usuarioService;
+    @Autowired
+    private CiudadService ciudadService;
 
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody AuthRequest authRequest) {
@@ -39,8 +44,8 @@ public class UsuarioAuthController {
 
         Usuario user = usuarioService.buscarPorCorreo(authRequest.getCorreo());
         String token = jwtUtil.generateToken(user.getCorreo(), user.getRol());
-
-        return ResponseEntity.ok(new AuthResponse(token));
+        System.out.println(token + ciudadService.getCiudadNombreById(user.getCiudad()));
+        return ResponseEntity.ok(new AuthResponse(token ,ciudadService.getCiudadNombreById(user.getCiudad())));
     }
 
     @PostMapping("/register")
@@ -69,9 +74,11 @@ class AuthRequest {
 
 class AuthResponse {
     private String token;
+    private String ciudadId;
 
-    public AuthResponse(String token) {
+    public AuthResponse(String token, String ciudadId) {
         this.token = token;
+        this.ciudadId = ciudadId;
     }
 
     public String getToken() {
@@ -80,6 +87,14 @@ class AuthResponse {
 
     public void setToken(String token) {
         this.token = token;
+    }
+
+    public String getCiudadId() {
+        return ciudadId;
+    }
+
+    public void setCiudadId(String ciudadId) {
+        this.ciudadId = ciudadId;
     }
 
 }

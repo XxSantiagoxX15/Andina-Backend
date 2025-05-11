@@ -16,8 +16,8 @@ public class Ciudad {
 
   private String nombre;
 
-  @ManyToOne
-  @JoinColumn(name = "pais_id") // esta es la columna que hace la clave foránea en la tabla 'ciudad'
-  private Pais pais;
+
+  @Column(name = "pais_id")
+  private int paisId;
 
 }

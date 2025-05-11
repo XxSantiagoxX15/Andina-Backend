@@ -54,6 +54,7 @@ public class UsuarioService {
     usuarioExistente.setTelefono(usuarioActualizado.getTelefono());
     usuarioExistente.setNumeroLicencia(usuarioActualizado.getNumeroLicencia());
     usuarioExistente.setRol(usuarioActualizado.getRol());
+    usuarioExistente.setSaldo(usuarioActualizado.getSaldo());
     usuarioExistente.setCiudad(usuarioActualizado.getCiudad());
     usuarioExistente.setUpdateAt(LocalDateTime.now());
 

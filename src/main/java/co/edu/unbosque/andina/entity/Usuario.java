@@ -49,7 +49,6 @@ public class Usuario {
   @Column(name = "numero_licencia")
   private String numeroLicencia;
 
-
   @Column(name = "rol_id")
   private int rol;
 

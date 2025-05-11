@@ -76,6 +76,7 @@ public class UsuarioController {
   })
   public ResponseEntity<Usuario> actualizarUsuario(@PathVariable Integer id, @RequestBody Usuario usuarioNuevo) {
     try {
+      System.out.println("entra "+ usuarioNuevo );
       Usuario actualizado = usuarioService.actualizarUsuario(id, usuarioNuevo);
       return ResponseEntity.ok(actualizado);
     } catch (Exception e) {
