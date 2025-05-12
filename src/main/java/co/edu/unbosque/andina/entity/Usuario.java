@@ -42,7 +42,6 @@ public class Usuario {
 
   @Column(name = "telefono")
   private String telefono;
-  @JsonIgnore
   @Column(name= "saldo")
   private Double saldo;
 

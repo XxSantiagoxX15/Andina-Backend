@@ -44,8 +44,8 @@ public class UsuarioAuthController {
 
         Usuario user = usuarioService.buscarPorCorreo(authRequest.getCorreo());
         String token = jwtUtil.generateToken(user.getCorreo(), user.getRol());
-        System.out.println(token + ciudadService.getCiudadNombreById(user.getCiudad()));
-        return ResponseEntity.ok(new AuthResponse(token ,ciudadService.getCiudadNombreById(user.getCiudad())));
+        System.out.println(token + ciudadService.getCiudadNombreById(user.getCiudad())+ user.getPrimerNombre()+ user.getPrimerApellido());
+        return ResponseEntity.ok(new AuthResponse(token ,ciudadService.getCiudadNombreById(user.getCiudad()),user.getRol(),user.getPrimerNombre(),user.getPrimerApellido()));
     }
 
     @PostMapping("/register")
@@ -61,6 +61,7 @@ class AuthRequest {
     private String correo;
     private String password;
 
+
     public String getCorreo() {
         return correo;
     }
@@ -75,10 +76,16 @@ class AuthRequest {
 class AuthResponse {
     private String token;
     private String ciudadId;
+    private String primerNombre;
+    private String primerApellido;
+    private int id;
 
-    public AuthResponse(String token, String ciudadId) {
+    public AuthResponse(String token, String ciudadId,int id,String primernombre,String primerapellido) {
         this.token = token;
         this.ciudadId = ciudadId;
+        this.primerApellido=primerapellido;
+        this.primerNombre=primernombre;
+        this.id=id;
     }
 
     public String getToken() {
@@ -89,12 +96,35 @@ class AuthResponse {
         this.token = token;
     }
 
+    public String getPrimerApellido() {
+        return primerApellido;
+    }
+
     public String getCiudadId() {
         return ciudadId;
+    }
+
+    public void setPrimerApellido(String primerApellido) {
+        this.primerApellido = primerApellido;
     }
 
     public void setCiudadId(String ciudadId) {
         this.ciudadId = ciudadId;
     }
 
+    public String getPrimerNombre() {
+        return primerNombre;
+    }
+
+    public void setPrimerNombre(String primerNombre) {
+        this.primerNombre = primerNombre;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
 }
