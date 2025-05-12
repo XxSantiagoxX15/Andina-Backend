@@ -17,8 +17,9 @@ public class Orden {
     private int  id;
 
     private String tipo_orden;
-
+private String simbolo;
     private  Double precio;
+
 
     private Date fecha_hora;
 
