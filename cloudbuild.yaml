@@ -5,7 +5,7 @@ substitutions:
 
 steps:
   # Paso 1: Verificar que el archivo JAR existe (si es una app Java)
-  - name: 'busybox'
+  - name: 'ubuntu'
     entrypoint: 'sh'
     args:
       - '-c'
