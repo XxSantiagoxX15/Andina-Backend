@@ -24,3 +24,8 @@ steps:
           --platform=managed \
           --allow-unauthenticated \
           --quiet
+
+
+
+options:
+  logging: CLOUD_LOGGING_ONLY
