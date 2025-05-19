@@ -1,14 +1,8 @@
-substitutions:
-  _SERVICE_NAME: "mi-app"
-  _REGION: "us-central1"
-  _IMAGE_NAME: "gcr.io/$PROJECT_ID/${_SERVICE_NAME}"
-
 steps:
-  # Paso 1: Compilar el proyecto con Maven
-  - name: 'gcr.io/cloud-builders/mvn'
+  - name: 'maven:3.9-eclipse-temurin-21'
+    entrypoint: 'mvn'
     args: ['clean', 'package', '-DskipTests']
 
-  # Paso 2: Construir la imagen Docker
   - name: 'gcr.io/cloud-builders/docker'
     args: [
       'build',
@@ -16,23 +10,17 @@ steps:
       '.'
     ]
 
-  # Paso 3: Subir la imagen al Container Registry
   - name: 'gcr.io/cloud-builders/docker'
     args: ['push', '${_IMAGE_NAME}']
 
-  # Paso 4: Desplegar en Cloud Run
   - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
     entrypoint: 'bash'
     args:
       - '-c'
       - |
-        echo "🚀 Desplegando a Cloud Run..."
         gcloud run deploy ${_SERVICE_NAME} \
           --image=${_IMAGE_NAME} \
           --region=${_REGION} \
           --platform=managed \
           --allow-unauthenticated \
           --quiet
-
-options:
-  logging: CLOUD_LOGGING_ONLY
