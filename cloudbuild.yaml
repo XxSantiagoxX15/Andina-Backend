@@ -4,17 +4,9 @@ substitutions:
   _IMAGE_NAME: "gcr.io/$PROJECT_ID/${_SERVICE_NAME}"
 
 steps:
-  # Paso 1: Verificar que el archivo JAR existe (si es una app Java)
-  - name: 'ubuntu'
-    entrypoint: 'sh'
-    args:
-      - '-c'
-      - |
-        echo "🔍 Verificando que el JAR exista..."
-        if [ ! -f target/*.jar ]; then
-          echo "❌ No se encontró el archivo JAR en /target. ¿Ya ejecutaste 'mvn package'?"
-          exit 1
-        fi
+  # Paso 1: Compilar el proyecto con Maven
+  - name: 'gcr.io/cloud-builders/mvn'
+    args: ['clean', 'package', '-DskipTests']
 
   # Paso 2: Construir la imagen Docker
   - name: 'gcr.io/cloud-builders/docker'
@@ -42,6 +34,5 @@ steps:
           --allow-unauthenticated \
           --quiet
 
-# Opcional: almacenar los logs en Cloud Logging
 options:
   logging: CLOUD_LOGGING_ONLY
