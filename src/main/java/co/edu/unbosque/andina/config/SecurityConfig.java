@@ -21,7 +21,7 @@ import java.util.List;
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
-@Autowired
+  @Autowired
   private  JwtFilter jwtAuthenticationFilter;
 
   public SecurityConfig(JwtFilter jwtAuthenticationFilter) {
@@ -46,7 +46,7 @@ public class SecurityConfig {
                     .requestMatchers("/admin/**").hasRole("ADMINISTRADOR")
                     .requestMatchers("/comisionista/**").hasRole("COMISIONISTA")
                     .requestMatchers("/accionista/**").hasRole("ACCIONISTA")
-                    .requestMatchers("/all/**").hasAnyRole("ADMINISTRADOR","COMISIONISTA","ACCIONISTA")
+                    .requestMatchers("/auth/**").hasAnyRole("ADMINISTRADOR","COMISIONISTA","ACCIONISTA")
                     .anyRequest().authenticated()
             )
             .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);

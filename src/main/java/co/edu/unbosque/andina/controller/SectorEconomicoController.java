@@ -19,7 +19,7 @@ import java.util.Optional;
 @Transactional
 @CrossOrigin(origins = { "http://localhost:8090", "http://localhost:8080", "*" })
 @RestController
-@RequestMapping("/all/sector-economico")
+@RequestMapping("/auth/sector-economico")
 public class SectorEconomicoController {
 
   @Autowired
@@ -49,7 +49,9 @@ public class SectorEconomicoController {
     @ApiResponse(responseCode = "500", description = "Error al recuperar los sectores económicos")
   })
   public ResponseEntity<List<SectorEconomico>> getAllSectores() {
+
     List<SectorEconomico> sectores = sectorService.getAllSectoresEconomicos();
+    System.out.println(sectores);
     return ResponseEntity.ok(sectores);
   }
 

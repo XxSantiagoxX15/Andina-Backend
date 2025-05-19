@@ -19,7 +19,7 @@ import java.util.Optional;
 @Transactional
 @CrossOrigin(origins = { "http://localhost:8090", "http://localhost:8080", "*" })
 @RestController
-@RequestMapping("/all/empresa")
+@RequestMapping("/auth/empresa")
 public class EmpresaController {
 
   @Autowired
@@ -33,6 +33,7 @@ public class EmpresaController {
   })
   public ResponseEntity<String> createEmpresa(@RequestBody Empresa empresa) {
     try {
+      System.out.println(empresa.getSector_economico_id());
       empresaService.createEmpresa(empresa);
       return ResponseEntity.ok("Empresa creada exitosamente");
     } catch (Exception e) {

@@ -21,7 +21,7 @@ public class Empresa {
 
   private String descripcion;
 
-  @ManyToOne
-  @JoinColumn(name = "sector_economico_id", referencedColumnName = "id")
-  private SectorEconomico sectorEconomico;
+
+  @JoinColumn(name ="sector_economico_id")
+  private int sector_economico_id;
 }

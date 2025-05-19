@@ -32,7 +32,7 @@ public class EmpresaService {
       Empresa empresaToUpdate = oldEmpresa.get();
       empresaToUpdate.setNombre(newEmpresa.getNombre());
       empresaToUpdate.setDescripcion(newEmpresa.getDescripcion());
-      empresaToUpdate.setSectorEconomico(newEmpresa.getSectorEconomico());
+      empresaToUpdate.setSector_economico_id(newEmpresa.getSector_economico_id());
       return empresaRepository.save(empresaToUpdate);
     }
     return null;
