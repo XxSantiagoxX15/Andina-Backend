@@ -1,5 +1,5 @@
 substitutions:
-  _IMAGE_NAME: gcr.io/$PROJECT_ID/mi-app
+  _IMAGE_NAME: gcr.io/linear-pointer-457514-g1/mi-app
   _SERVICE_NAME: mi-app
   _REGION: us-central1
 
