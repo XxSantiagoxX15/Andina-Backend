@@ -1,26 +1,47 @@
-steps:
-  - name: 'maven:3.9.6-eclipse-temurin-21-alpine'
-    entrypoint: mvn
-    args: ['clean', 'package', '-DskipTests']
+substitutions:
+  _SERVICE_NAME: "mi-app"
+  _REGION: "us-central1"
+  _IMAGE_NAME: "gcr.io/$PROJECT_ID/${_SERVICE_NAME}"
 
-  - name: 'gcr.io/cloud-builders/docker'
-    args: ['build', '-t', 'gcr.io/$PROJECT_ID/mi-app', '.']
-  - name: 'gcr.io/cloud-builders/docker'
-    args: ['build', '-t', 'gcr.io/$PROJECT_ID/mi-app', '.']
-  - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
-    entrypoint: gcloud
+steps:
+  # Paso 1: Verificar que el archivo JAR existe (si es una app Java)
+  - name: 'gcr.io/cloud-builders/busybox'
+    entrypoint: 'sh'
     args:
-      - 'run'
-      - 'deploy'
-      - 'mi-app'
-      - '--image'
-      - 'gcr.io/$PROJECT_ID/mi-app'
-      - '--region'
-      - 'us-central1'
-      - '--platform'
-      - 'managed'
-      - '--allow-unauthenticated'
-images:
-  - 'gcr.io/$PROJECT_ID/mi-app'
+      - '-c'
+      - |
+        echo "🔍 Verificando que el JAR exista..."
+        if [ ! -f target/*.jar ]; then
+          echo "❌ No se encontró el archivo JAR en /target. ¿Ya ejecutaste 'mvn package'?"
+          exit 1
+        fi
+
+  # Paso 2: Construir la imagen Docker
+  - name: 'gcr.io/cloud-builders/docker'
+    args: [
+      'build',
+      '-t', '${_IMAGE_NAME}',
+      '.'
+    ]
+
+  # Paso 3: Subir la imagen al Container Registry
+  - name: 'gcr.io/cloud-builders/docker'
+    args: ['push', '${_IMAGE_NAME}']
+
+  # Paso 4: Desplegar en Cloud Run
+  - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
+    entrypoint: 'bash'
+    args:
+      - '-c'
+      - |
+        echo "🚀 Desplegando a Cloud Run..."
+        gcloud run deploy ${_SERVICE_NAME} \
+          --image=${_IMAGE_NAME} \
+          --region=${_REGION} \
+          --platform=managed \
+          --allow-unauthenticated \
+          --quiet
+
+# Opcional: almacenar los logs en Cloud Logging
 options:
   logging: CLOUD_LOGGING_ONLY
