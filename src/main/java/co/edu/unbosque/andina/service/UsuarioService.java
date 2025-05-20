@@ -6,6 +6,7 @@ import co.edu.unbosque.andina.entity.Rol;
 import co.edu.unbosque.andina.repository.RolRepository;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -17,6 +18,8 @@ public class UsuarioService {
 
   @Autowired
   private UsuarioRepository usuarioRepository;
+  @Autowired
+  private AuditoriaService auditoriaService;
 
   @Autowired
   private RolRepository rolRepository;
@@ -38,7 +41,15 @@ public class UsuarioService {
   public Usuario guardarUsuario(Usuario usuario) {
     usuario.setCreatedAt(LocalDateTime.now());
     usuario.setUpdateAt(LocalDateTime.now());
-    return usuarioRepository.save(usuario);
+    Usuario nuevo = usuarioRepository.save(usuario);
+
+    // Obtener el nombre del usuario autenticado
+    String usuarioAccion = SecurityContextHolder.getContext().getAuthentication().getName();
+
+    // Registrar en auditoría
+    auditoriaService.registrarAuditoria("CREAR", "Creacion de un usuario","");
+
+    return nuevo;
   }
 
   public Usuario actualizarUsuario(Integer identificacion, Usuario usuarioActualizado) {
@@ -57,20 +68,34 @@ public class UsuarioService {
     usuarioExistente.setSaldo(usuarioActualizado.getSaldo());
     usuarioExistente.setCiudad(usuarioActualizado.getCiudad());
     usuarioExistente.setUpdateAt(LocalDateTime.now());
+    String usuarioAccion = SecurityContextHolder.getContext().getAuthentication().getName();
 
+    // Registrar en auditoría
+    auditoriaService.registrarAuditoria("ACTUALIZAR", "Actualizacion de un usuario"+ usuarioExistente.getCorreo(),usuarioAccion);
     return usuarioRepository.save(usuarioExistente);
   }
 
   public void eliminarUsuario(Integer identificacion) {
     Usuario usuario = buscarPorIdentificacion(identificacion);
     usuario.setDeletedAt(LocalDateTime.now());
+
+    String usuarioAccion = SecurityContextHolder.getContext().getAuthentication().getName();
+
+    // Registrar en auditoría
+    auditoriaService.registrarAuditoria("BORRADO LOGICO", "BORRADO LOGICO DE USUARIO"+ usuario.getCorreo(),usuarioAccion);
     usuarioRepository.save(usuario); // Borrado lógico
   }
 
   public void eliminarUsuarioPermanentemente(Integer identificacion) {
+    Usuario usuario = usuarioRepository.findById(identificacion).
+            orElseThrow(() -> new EntityNotFoundException("Usuario no encontrado con ID: " + identificacion));
     if (!usuarioRepository.existsById(identificacion)) {
       throw new EntityNotFoundException("Usuario no encontrado con ID: " + identificacion);
     }
+    String usuarioAccion = SecurityContextHolder.getContext().getAuthentication().getName();
+
+    // Registrar en auditoría
+    auditoriaService.registrarAuditoria("BORRADO", "BORRADO DE USUARIO"+ usuario.getCorreo(),usuarioAccion);
     usuarioRepository.deleteById(identificacion); // Borrado físico
   }
 }
